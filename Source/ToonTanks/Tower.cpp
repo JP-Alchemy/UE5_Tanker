@@ -28,10 +28,17 @@ void ATower::CheckFireCondition()
     Fire();
 }
 
-bool ATower::IsInFireRange() {
+bool ATower::IsInFireRange() 
+{
     if (!Tank) return false;
     // Get distance to tank, check if in range then rotate towards tank
     float dist = FVector::Dist(GetActorLocation(), Tank->GetActorLocation());
     if (dist > FireRange) return false;
     return true;
+}
+
+void ATower::HandleDestruction() 
+{
+    Super::HandleDestruction();
+    Destroy();
 }

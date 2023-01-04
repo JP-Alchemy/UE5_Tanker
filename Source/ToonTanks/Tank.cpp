@@ -28,7 +28,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-    PlayerControllerRef = Cast<APlayerController>(GetController());
+    TankPlayerController = Cast<APlayerController>(GetController());
 }
 
 // Called every frame
@@ -36,9 +36,9 @@ void ATank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    if(!PlayerControllerRef) return;
+    if(!TankPlayerController) return;
     FHitResult HitResult;
-    if(!PlayerControllerRef->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult)) return;
+    if(!TankPlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult)) return;
     RotateTurret(HitResult.ImpactPoint);
 }
 
@@ -55,4 +55,11 @@ void ATank::Turn(float value)
     FRotator DeltaRotator = FRotator::ZeroRotator;
     DeltaRotator.Yaw = value * TurnRate * UGameplayStatics::GetWorldDeltaSeconds(this);
     AddActorLocalRotation(DeltaRotator, true);
+}
+
+void ATank::HandleDestruction()
+{
+    Super::HandleDestruction();
+    SetActorHiddenInGame(true);
+    SetActorTickEnabled(false);
 }

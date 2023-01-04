@@ -19,10 +19,15 @@ public:
 	ATank();
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+	void HandleDestruction();
+
+	APlayerController *GetPlayerController() const { return TankPlayerController; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,12 +42,12 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Components")
 	float Speed = 200.f;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Components")
 	float TurnRate = 10.f;
 
 	void Move(float value);
 	void Turn(float value);
 
-	APlayerController* PlayerControllerRef;
+	APlayerController *TankPlayerController;
 };
